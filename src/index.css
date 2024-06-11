@@ -10,6 +10,13 @@
 }
 
 @font-face {
+  font-family: "Poppins-bold";
+  src: url("./assets/fonts/Poppins-Bold.ttf") format("truetype");
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: "Poppins-medium";
   src: url("./assets/fonts/Poppins-Medium.ttf") format("truetype");
   font-style: normal;
@@ -19,6 +26,13 @@
 @font-face {
   font-family: "Poppins-regular";
   src: url("./assets/fonts/Poppins-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins-semibold";
+  src: url("./assets/fonts/Poppins-SemiBold.ttf") format("truetype");
   font-style: normal;
   font-display: swap;
 }
