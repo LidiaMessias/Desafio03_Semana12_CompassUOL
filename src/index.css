@@ -17,6 +17,13 @@
 }
 
 @font-face {
+  font-family: "Poppins-light";
+  src: url("./assets/fonts/Poppins-Light.ttf") format("truetype");
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: "Poppins-medium";
   src: url("./assets/fonts/Poppins-Medium.ttf") format("truetype");
   font-style: normal;

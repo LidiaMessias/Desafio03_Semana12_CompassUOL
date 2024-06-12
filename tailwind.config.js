@@ -9,6 +9,7 @@ export default {
       fontFamily: {
         'montserrat-bold': ['Montserrat-bold', 'sans-serif'],
         'poppins-bold': ['Poppins-bold', 'sans-serif'],
+        'poppins-light': ['Poppins-light', 'sans-serif'],
         'poppins-medium': ['Poppins-medium', 'sans-serif'],
         'poppins-regular': ['Poppins-regular', 'sans-serif'],
         'poppins-semibold': ['Poppins-semibold', 'sans-serif'],
@@ -32,6 +33,7 @@ export default {
         meddark: '#666666',
         begeligth: '#FCF8F3',
         darkmostarda: '#937125',
+        begeexlig: '#FAF3EA',
       },
       spacing: {
         '100': '440px',
