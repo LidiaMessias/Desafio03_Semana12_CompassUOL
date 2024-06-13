@@ -6,6 +6,7 @@ import About from "./pages/About"
 import Contact from "./pages/Contact"
 import Footer from "./components/Footer"
 import ShopCart from "./pages/ShopCart"
+import ProductDetail from "./pages/ProductDetail"
 
 function App() {
 
@@ -34,6 +35,11 @@ function App() {
           element={<Contact/>}
         />
 
+        <Route
+          path="/product/:id"
+          element={<ProductDetail/>}
+        />
+        
         <Route 
           path="/shopcart"
           element={<ShopCart/>}
