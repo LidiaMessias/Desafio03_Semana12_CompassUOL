@@ -12,4 +12,5 @@ export type Product = {
     category: string;
     tags: string[];
     new: boolean;
+    addInfo: string;
 }
