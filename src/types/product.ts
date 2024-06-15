@@ -2,7 +2,7 @@ export type Product = {
     id: number;
     title: string;
     subtitle: string;
-    shorDescription: string;
+    shortDescription: string;
     description: string;
     size: string;
     color: string[];
@@ -13,4 +13,5 @@ export type Product = {
     tags: string[];
     new: boolean;
     addInfo: string;
+    image: string;
 }

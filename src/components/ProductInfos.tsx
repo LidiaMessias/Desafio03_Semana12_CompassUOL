@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom'
-import RightArrow from '../assets/images/dashicons_arrow-down-alt2.png'
+import { Product } from '../types/product';
 import axios from 'axios';
+import Card from './Card';
+
+import RightArrow from '../assets/images/dashicons_arrow-down-alt2.png'
 import Star from '../assets/images/Star.png'
 import halfStar from '../assets/images/halfStar.png'
 import ProductImg01 from '../assets/images/Cloud sofa three seater + ottoman_1 1.png'
@@ -10,66 +13,45 @@ import ProductImg03 from '../assets/images/Asgaard sofa 3.png'
 import FaceIcon from '../assets/images/akar-icons_facebook-fill.png'
 import Twitter from '../assets/images/Twitter1.png'
 import Linkedin from '../assets/images/akar-icons_linkedin-box-fill.png'
-import img01 from '../assets/images/image 1.png'
-import img02 from '../assets/images/image 2.png'
-import img03 from '../assets/images/image 3.png'
-import img04 from '../assets/images/image 4.png'
 
-
-type ProductType = {
-    id: number;
-    title: string;
-    subtitle: string;
-    shorDescription: string;
-    description: string;
-    size: string;
-    color: string[];
-    price: number;
-    discount: number;
-    isInSale: boolean;
-    category: string;
-    tags: string[];
-    new: boolean;
-    addInfo: string;
-};
 
 const ProductInfos = () => {
-    const {id} = useParams<{ id: string }>();
-    const [product, setProduct] = useState<ProductType | null>(null);
+    const { id } = useParams<{ id: string }>();
+    const [product, setProduct] = useState<Product | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [selectedImage, setSelectedImage] = useState<string | null>(null); 
     const [quantity, setQuantity] = useState<number>(1);
     const [selectedInfo, setSelectedInfo] = useState<'description' | 'addInfo'>('description');
-    const [relatedProducts, setRelatedProducts] = useState<ProductType[]>([]);
+    const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
 
-    const images = [ProductImg01, ProductImg02, ProductImg03, ProductImg01];
+    const images = [ProductImg03, ProductImg01, ProductImg02, ProductImg03];
 
     useEffect(() => {
         
         const getProduct = async () => {
             try {
-                const response = await axios.get<{products: ProductType[] }>(`https://run.mocky.io/v3/13d6fb21-a97c-4e84-9038-9f4e38ac7de7/${id}`);
+                const response = await axios.get<{products: Product[] }>(`https://run.mocky.io/v3/bd3b7250-8427-4739-82c4-61bb15295e68/${id}`);
                 const products = response.data.products;
 
-                if (id) {
-                    const singleProduct = products.find(product => product.id === parseInt(id));
+                
+                const singleProduct = products.find(product => product.id === parseInt(id ?? '', 10));
 
-                    if (singleProduct) {
-                        setProduct(singleProduct);
-                        setSelectedImage(images[0]);
+                if (singleProduct) {
+                    setProduct(singleProduct);
+                    setSelectedImage(images[0]);
 
-                        const similarProductsResp = await axios.get<{ products: ProductType[] }>('https://run.mocky.io/v3/13d6fb21-a97c-4e84-9038-9f4e38ac7de7');
-                        console.log(similarProductsResp);
-                        const similarProducts = similarProductsResp.data.products.filter((prod) => {
-                            prod.tags.some((tag) => singleProduct?.tags.includes(tag))
-                        });
-                        const qtProducts = similarProducts.slice(0,4);
-                        setRelatedProducts(qtProducts);
-                    } else {
-                    setError("Product not found!");
-                    }
-                } 
-
+                    const similarProductsResp = await axios.get<{ products: Product[] }>('https://run.mocky.io/v3/bd3b7250-8427-4739-82c4-61bb15295e68');
+                    console.log(similarProductsResp);
+                    const similarProducts = similarProductsResp.data.products.filter((prod) => {
+                        return prod.id !== singleProduct.id && prod.tags.some((tag) => singleProduct.tags.includes(tag))
+                    });
+                    const qtProducts = similarProducts.slice(0,4);
+                    setRelatedProducts(qtProducts);
+                    
+                } else {
+                setError("Product not found!");
+                }
+                
             } catch (error) {
                 setError("Error on loading product!")
             }    
@@ -90,13 +72,12 @@ const ProductInfos = () => {
 
     const handleIncrement = () => setQuantity(prev => prev + 1);
     const handleDecrement = () => setQuantity(prev => (prev > 1 ? prev - 1 : 1));
+
     const handleInfo = (field: 'description' | 'addInfo') => {
         setSelectedInfo(field);
     };
 
     const offer = product.isInSale ? (product.price * (1 - product.discount / 100)).toFixed(2) : product.price;
-
-    const imgs = [img01, img02, img03, img04];
 
   return (
     <>
@@ -238,47 +219,22 @@ const ProductInfos = () => {
                 </div>      
             </div>
         </div>
-        
-               
-          <div>
-            <h3>Related Products</h3>
+                   
+        <div className=' pt-14 pb-20 mx-24 flex flex-col items-center'>
+            <h3 className=' font-poppins-medium text-4xl text-center'>Related Products</h3>
             {relatedProducts.length > 0 && ( 
-              <div className='md:grid md:grid-cols-3 lg:grid lg:grid-cols-4 w-full px-24 pt-16 '>
-                {relatedProducts.map((relProduct, index) => {
-                    const offer = relProduct.isInSale ? (relProduct.price * (1 - relProduct.discount / 100)).toFixed(2) : relProduct.price;
-                    return (
-                        <Link to={`/product/${relProduct.id}`}>
-                        <div key={relProduct.id} className='flex flex-col md:items-center mb-20'>
-                            <div className=' flex flex-col justify-start md:max-w-72'>
-                                <img 
-                                    src={imgs[index % imgs.length]} 
-                                    alt={relProduct.title} 
-                                    className='w-full md:max-h-76' 
-                                />
-                                <div className='px-4 pt-4 bg-graylig'>
-                                    <h3 className=' font-poppins-semibold text-2xl text-gray1 mt-2 mb-3'>{relProduct.title}</h3>
-                                    <span className=' font-poppins-medium text-graymed '>{relProduct.subtitle} </span>
-                                    <div className=' mb-8 mt-3'>
-                                        {relProduct.isInSale ? (
-                                            <p>
-                                                <span className=' font-poppins-semibold text-xl text-gray1'>Rp {offer}</span>
-                                                <span className=' ml-14 font-poppins-regular text-gray0 line-through'>Rp {relProduct.price} </span>
-                                            </p>
-                                        ) : (
-                                            <p className='font-poppins-semibold text-xl text-gray1'>Rp {relProduct.price} </p>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        </Link>
-                    )               
-                })} 
-              </div>
-           )}   
-          </div>
-        
-        
+                <div className='md:grid md:grid-cols-3 lg:grid lg:grid-cols-4 w-full pt-16 mb-2'>
+                    {relatedProducts.map((relProduct) => (
+                        <Card key={relProduct.id} product={relProduct} />
+                    ))}   
+                </div>
+            )}
+            
+            <Link to={'/shop'}>         
+                <button className=' h-12 w-60 bg-white text-mostarda font-poppins-semibold border-2 border-mostarda hover:bg-mostarda hover:text-white transition-all hover:scale-105'>Show More</button>  
+            </Link>
+        </div>
+             
     </>
   )
 }

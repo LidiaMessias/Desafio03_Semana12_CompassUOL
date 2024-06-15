@@ -19,7 +19,7 @@ export default {
         graymed: '#898989',
         gray3: '#2EC1AC',
         graylig: '#F4F5F7',
-        redlig: 'E97171',
+        redlig: '#E97171',
         gray0: '#B0B0B0',
         mostarda: '#B88E2F',
         gray2: '#616161',

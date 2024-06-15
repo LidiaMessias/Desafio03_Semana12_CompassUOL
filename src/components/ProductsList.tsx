@@ -1,35 +1,19 @@
 import { useState, useEffect }from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import img01 from '../assets/images/image 1.png'
-import img02 from '../assets/images/image 2.png'
-import img03 from '../assets/images/image 3.png'
-import img04 from '../assets/images/image 4.png'
-import img05 from '../assets/images/Image 5.png'
-import img06 from '../assets/images/image 6.png'
-import img07 from '../assets/images/image 7.png'
-import img08 from '../assets/images/image 8.png'
+import { Product } from '../types/product';
+import Card from './Card';
+import Filter from '../assets/images/system-uicons_filtering.png'
+import Grid from '../assets/images/grid-big.png'
+import List from '../assets/images/view-list.png'
 
-type ProductType = {
-    id: number;
-    title: string;
-    subtitle: string;
-    shorDescription: string;
-    description: string;
-    size: string;
-    color: string[];
-    price: number;
-    discount: number;
-    isInSale: boolean;
-    category: string;
-    tags: string[];
-    new: boolean;
-    addInfo: string;
-};
 
 const ProductsList = () => {
 
-    const [products, setProducts] = useState<ProductType[]>([]);
+    const [products, setProducts] = useState<Product[]>([]);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [itemsPerPage, setItemsPerPage] = useState<number>(16);
+    const [totalProducts, setTotalProducts] = useState<number>(0);
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
 
@@ -37,17 +21,19 @@ const ProductsList = () => {
 
         const getProducts = async () => {
             try {
-                const response = await axios.get<{ products: ProductType[] }>('https://run.mocky.io/v3/13d6fb21-a97c-4e84-9038-9f4e38ac7de7');
-                if (response.data && Array.isArray(response.data.products)) {
-                setProducts(response.data.products);
-                } else {
-                    setError("Um erro inesperado aconteceu");
-                }
-            } catch (err){
+                const response = await axios.get<{ products: Product[] }>('https://run.mocky.io/v3/bd3b7250-8427-4739-82c4-61bb15295e68');
+                const products = response.data.products;
+
+                setProducts(products);
+                setTotalProducts(products.length)
+
+            } catch (error){
                 setError("Erro ao carregar os produtos");
             }
         };
+
         getProducts();
+
     }, []);
 
     if (error) {
@@ -55,39 +41,64 @@ const ProductsList = () => {
         return null;
     }
 
-    const images = [img01, img02, img03, img04, img05, img06, img07, img08]
-;
+    const indexOfLastProduct = currentPage * itemsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
+    const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+
+    const totalPages = Math.ceil(totalProducts / itemsPerPage);
+
+    const handlePage = (pageNumber: number) => {
+        setCurrentPage(pageNumber)
+    };
+
+    
     return (
         <>
-        <div className='md:grid md:grid-cols-3 lg:grid lg:grid-cols-4 w-full px-24 pt-16 '>
-            {products.map((product, index) => {
-                const offer = product.isInSale ? (product.price * (1 - product.discount / 100)).toFixed(2) : product.price;
-                const image = images[index % images.length];
-                return (
-                    <Link to={`/product/${product.id}`}>
-                        <div key={product.id} className='flex flex-col md:items-center mb-20'>
-                            <div className=' flex flex-col justify-start md:max-w-72'>
-                                <img src={image} alt={product.title} className='w-full md:max-h-76' />
-                                <div className='px-4 pt-4 bg-graylig'>
-                                    <h3 className=' font-poppins-semibold text-2xl text-gray1 mt-2 mb-3'>{product.title}</h3>
-                                    <span className=' font-poppins-medium text-graymed '>{product.subtitle} </span>
-                                    <div className=' mb-8 mt-3'>
-                                        {product.isInSale ? (
-                                            <p>
-                                                <span className=' font-poppins-semibold text-xl text-gray1'>Rp {offer}</span>
-                                                <span className=' ml-14 font-poppins-regular text-gray0 line-through'>Rp {product.price} </span>
-                                            </p>
-                                        ) : (
-                                            <p className='font-poppins-semibold text-xl text-gray1'>Rp {product.price} </p>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </Link>
-                )
-            })}
+        <div className=' h-28 w-full flex items-center justify-between bg-bege px-28 '>
+            <div className='flex gap-8'>
+                <div className='flex gap-6 '>
+                    <img src={Filter} alt="icone de filtro" className=' w-6 h-6' />
+                    <span className=' font-poppins-regular text-xl'>Filter</span>
+                    <img src={Grid} alt="Ícone de grid" className=' w-6 h-6' />
+                    <img src={List} alt="Ícone de lista" className=' w-6 h-6'/>
+                </div>
+                <div className='pl-9 border-l-2  border-gray4'>
+                    <span className='font-poppins-regular'>Showing {indexOfFirstProduct + 1}-{indexOfLastProduct > totalProducts ? totalProducts : indexOfLastProduct} of {totalProducts} </span>
+                </div>
+            </div>
+            <div className='flex items-center justify-center gap-4'>
+                <span className=' font-poppins-regular text-xl'>Show</span>
+                <input 
+                    type="number" 
+                    value={itemsPerPage} 
+                    onChange={(e) => setItemsPerPage(Number(e.target.value))}
+                    className=' text-center w-14 h-14 border-0 font-poppins-regular text-gray4 text-xl' 
+                    min='1'
+                />     
+                <span>Sort by</span>
+                <input type="text" value="Default" className=' p-5 w-48 h-14 border-0  font-poppins-regular text-gray4 text-xl'  />
+            </div>
+        </div>
+
+        <div className='md:grid md:grid-cols-3 lg:grid lg:grid-cols-4 w-full px-24 pt-16 mb-12 '>
+
+            {currentProducts.map(product => (
+                <Card key={product.id} product={product} />
+            ))}
+
         </div>  
+
+        <div className=' flex justify-center items-center gap-10 mb-20'>
+            {[...Array(totalPages)].map((_, index) => (
+                <button key={index}
+                    onClick={() => handlePage(index + 1)}
+                    className={`font-poppins-regular text-xl w-15 h-15 rounded-xl ${currentPage === index + 1 ? 'bg-mostarda text-white' : 'bg-bege text-black' }`} 
+                >
+                    {index + 1} 
+                </button>
+            ))}
+            
+        </div>
         </>
     )
 }
