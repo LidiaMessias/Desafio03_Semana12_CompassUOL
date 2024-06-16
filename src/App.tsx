@@ -5,8 +5,9 @@ import Shop from "./pages/Shop"
 import About from "./pages/About"
 import Contact from "./pages/Contact"
 import Footer from "./components/Footer"
-import ShopCart from "./pages/ShopCart"
+import Cart from "./pages/Cart"
 import ProductDetail from "./pages/ProductDetail"
+import Checkout from "./pages/Checkout"
 
 function App() {
 
@@ -41,8 +42,13 @@ function App() {
         />
         
         <Route 
-          path="/shopcart"
-          element={<ShopCart/>}
+          path="/cart"
+          element={<Cart/>}
+        />
+
+        <Route
+          path="checkout"
+          element={<Checkout/>}
         />
         
       </Routes>

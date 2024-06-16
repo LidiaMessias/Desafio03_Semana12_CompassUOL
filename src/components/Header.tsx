@@ -10,8 +10,8 @@ const Header = () => {
         <div className=" mx-auto h-full flex justify-between items-center">
 
             <Link to={'/'} >
-                <div className="flex gap-2 pl-14">
-                    <img src={Logo} alt="" />
+                <div className="flex gap-2 pl-14 items-center">
+                    <img src={Logo} alt="Logotipo da Empresa" className=' w-12 h-8' />
                     <span className=" text-4xl font-montserrat-bold">Furniro</span>
                 </div>
             </Link>

@@ -1,15 +1,13 @@
 import Breadcrumb from '../components/Breadcrumb'
-import ContactForm from '../components/ContactForm'
 import ShopQualitys from '../components/ShopQualitys'
 
-const Contact = () => {
+const ShopCart = () => {
   return (
     <>
       <Breadcrumb/>
-      <ContactForm/>
       <ShopQualitys/>
     </>
   )
 }
 
-export default Contact
+export default ShopCart

@@ -1,8 +1,8 @@
-import React from 'react'
+import HomePage from './HomePage'
 
 const About = () => {
   return (
-    <div>About</div>
+    <HomePage/>
   )
 }
 

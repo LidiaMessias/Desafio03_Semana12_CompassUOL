@@ -25,6 +25,7 @@ const ProductInfos = () => {
     const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
 
     const images = [ProductImg03, ProductImg01, ProductImg02, ProductImg03];
+    const starImg = Array(4).fill(Star)
 
     useEffect(() => {
         
@@ -126,10 +127,9 @@ const ProductInfos = () => {
                 </div>
                 <div className='flex gap-14 my-4 '>
                     <div className='flex gap-2'>
-                        <img src={Star} alt="Star icon" />
-                        <img src={Star} alt="Star icon" />
-                        <img src={Star} alt="Star icon" />
-                        <img src={Star} alt="Star icon" />
+                        {starImg.map((img, index) => (
+                            <img key={index} src={img} alt='Star icon' />
+                        ))}
                         <img src={halfStar} alt="Half star icon" />
                     </div>
                     <div>

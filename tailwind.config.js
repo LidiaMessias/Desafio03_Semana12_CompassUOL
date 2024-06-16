@@ -50,6 +50,7 @@ export default {
         '99': "500px",
         '105': "560px",
         '106': "600px",
+        '97': "528px",
       },
       fontSize: {
         '4.5xl': '2.5rem',

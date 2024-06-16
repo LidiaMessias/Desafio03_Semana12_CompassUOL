@@ -1,11 +1,11 @@
-import ShopBanner from '../components/ShopBanner'
 import ShopQualitys from '../components/ShopQualitys'
 import ProductsList from '../components/ProductsList'
+import Breadcrumb from '../components/Breadcrumb'
 
 const Shop = () => {
   return (
     <>
-      <ShopBanner/>
+      <Breadcrumb/>
       <ProductsList/>
       <ShopQualitys/>
     </>
