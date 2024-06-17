@@ -1,0 +1,77 @@
+.carousel-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+  
+.info-column {  /*flex flex-col justify-start ml-24 mr-11 max-w-96 */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    margin-left: 96px;
+    margin-right: 44px;
+    max-width: 420px;
+}
+
+.carousel-column {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.embla {
+    overflow: hidden;
+    width: 100%;
+}
+
+.embla__container {
+    display: flex;
+    /*width: 200%;*/
+}
+
+.embla__slide {
+    position: relative;
+    min-width: 50%;
+    padding: 10px;
+}
+
+.embla__slide.first-slide {
+    transform: scale(1.2);
+}
+
+.carousel-image {
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+/*.carousel-image.is-selected {
+    transform: scale(1.2);
+}*/
+
+.embla__dots {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    position: absolute;
+    bottom: 10px;
+}
+
+.embla__dot {
+    background-color: #ccc;
+    border: none;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    margin: 0 5px;
+    padding: 0;
+    cursor: pointer;
+}
+
+.embla__dot.is-selected {
+    background-color: #333;
+}
+  
