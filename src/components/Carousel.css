@@ -5,7 +5,7 @@
 }
   
 .info-column {  /*flex flex-col justify-start ml-24 mr-11 max-w-96 */
-    flex: 1;
+    flex: 0 0 40%;
     display: flex;
     flex-direction: column;
     justify-content: start;
@@ -14,64 +14,58 @@
     max-width: 420px;
 }
 
-.carousel-column {
-    flex: 2;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.embla {
+    flex: 0 0 60%;
     position: relative;
+    overflow: hidden;
 }
 
-.embla {
+.embla-viewport {
     overflow: hidden;
     width: 100%;
 }
 
-.embla__container {
+.embla-container {
     display: flex;
-    /*width: 200%;*/
+    /*margin-right: 100px;*/
 }
 
-.embla__slide {
+.embla-slide {
     position: relative;
-    min-width: 50%;
-    padding: 10px;
+    min-width: 35%;
+    transition: transform 0.3s ease;
+    margin-right: 80px;
 }
 
-.embla__slide.first-slide {
-    transform: scale(1.2);
-}
-
-.carousel-image {
+.embla-slide img {
     width: 100%;
     height: auto;
+    display: block;
     transition: transform 0.3s ease;
 }
 
-/*.carousel-image.is-selected {
+.embla-slide--selected {
     transform: scale(1.2);
-}*/
-
-.embla__dots {
-    display: flex;
-    justify-content: center;
-    padding: 10px;
-    position: absolute;
-    bottom: 10px;
 }
 
-.embla__dot {
-    background-color: #ccc;
+.embla-dots {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    position: absolute;
+    bottom: 40px;
+    right: 45%}
+
+.embla-dots button {
+    background-color: #d9d9d9;
     border: none;
     border-radius: 50%;
     width: 10px;
     height: 10px;
-    margin: 0 5px;
-    padding: 0;
     cursor: pointer;
 }
 
-.embla__dot.is-selected {
-    background-color: #333;
+.embla-dots button.active {
+    background-color: #B88E2F;
 }
   

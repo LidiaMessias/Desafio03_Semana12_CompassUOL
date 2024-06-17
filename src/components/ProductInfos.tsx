@@ -31,7 +31,7 @@ const ProductInfos = () => {
         
         const getProduct = async () => {
             try {
-                const response = await axios.get<{products: Product[] }>(`https://run.mocky.io/v3/bd3b7250-8427-4739-82c4-61bb15295e68/${id}`);
+                const response = await axios.get<{products: Product[] }>(`https://run.mocky.io/v3/72e0adf3-a205-42af-b1e5-4dbd2d6cad03/${id}`);
                 const products = response.data.products;
 
                 
@@ -41,7 +41,7 @@ const ProductInfos = () => {
                     setProduct(singleProduct);
                     setSelectedImage(images[0]);
 
-                    const similarProductsResp = await axios.get<{ products: Product[] }>('https://run.mocky.io/v3/bd3b7250-8427-4739-82c4-61bb15295e68');
+                    const similarProductsResp = await axios.get<{ products: Product[] }>('https://run.mocky.io/v3/72e0adf3-a205-42af-b1e5-4dbd2d6cad03');
                     console.log(similarProductsResp);
                     const similarProducts = similarProductsResp.data.products.filter((prod) => {
                         return prod.id !== singleProduct.id && prod.tags.some((tag) => singleProduct.tags.includes(tag))

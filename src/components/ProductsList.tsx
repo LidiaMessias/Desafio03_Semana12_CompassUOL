@@ -21,7 +21,7 @@ const ProductsList = () => {
 
         const getProducts = async () => {
             try {
-                const response = await axios.get<{ products: Product[] }>('https://run.mocky.io/v3/bd3b7250-8427-4739-82c4-61bb15295e68');
+                const response = await axios.get<{ products: Product[] }>('https://run.mocky.io/v3/72e0adf3-a205-42af-b1e5-4dbd2d6cad03');
                 const products = response.data.products;
 
                 setProducts(products);
