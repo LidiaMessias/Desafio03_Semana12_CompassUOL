@@ -6,11 +6,13 @@ export const UPDATE_ITEM_QUANTITY = 'UPDATE_ITEM_QUANTITY';
 
 export type CartItem = Product & {
     quantity: number;
+    finalPrice: number;
 }
 
 type AddToCartAction = {
     type: typeof ADD_TO_CART;
-    payload: Product;
+    //payload: Product;
+    payload: CartItem;
 }
 
 type DeleteFromCartAction = {
@@ -28,10 +30,13 @@ type UpdateItemQuantity = {
 
 export type CartActionTypes = AddToCartAction | DeleteFromCartAction | UpdateItemQuantity;
 
-export const addToCart = (product: Product): AddToCartAction => ({
-    type: ADD_TO_CART,
-    payload: product,
-});
+export const addToCart = (product: Product, quantity: number = 1): AddToCartAction => {
+    const finalPrice = product.isInSale ? parseFloat((product.price * (1 - product.discount / 100)).toFixed(2)) : product.price;
+    return {
+        type: ADD_TO_CART,
+        payload: { ...product, quantity, finalPrice},
+    }    
+};
 
 export const deleteFromCart = (id: number): DeleteFromCartAction => ({
     type: DELETE_FROM_CART,

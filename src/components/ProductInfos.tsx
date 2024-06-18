@@ -3,6 +3,8 @@ import { Link, useParams } from 'react-router-dom'
 import { Product } from '../types/product';
 import axios from 'axios';
 import Card from './Card';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../action/cartAction';
 
 import RightArrow from '../assets/images/dashicons_arrow-down-alt2.png'
 import Star from '../assets/images/Star.png'
@@ -23,6 +25,7 @@ const ProductInfos = () => {
     const [quantity, setQuantity] = useState<number>(1);
     const [selectedInfo, setSelectedInfo] = useState<'description' | 'addInfo'>('description');
     const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+    const dispatch = useDispatch();
 
     const images = [ProductImg03, ProductImg01, ProductImg02, ProductImg03];
     const starImg = Array(4).fill(Star)
@@ -32,9 +35,7 @@ const ProductInfos = () => {
         const getProduct = async () => {
             try {
                 const response = await axios.get<{products: Product[] }>(`https://run.mocky.io/v3/72e0adf3-a205-42af-b1e5-4dbd2d6cad03/${id}`);
-                const products = response.data.products;
-
-                
+                const products = response.data.products;         
                 const singleProduct = products.find(product => product.id === parseInt(id ?? '', 10));
 
                 if (singleProduct) {
@@ -78,7 +79,17 @@ const ProductInfos = () => {
         setSelectedInfo(field);
     };
 
-    const offer = product.isInSale ? (product.price * (1 - product.discount / 100)).toFixed(2) : product.price;
+    const handleAddToCart = () => {
+        const finalPrice = product.isInSale ? parseFloat((product.price * (1 - product.discount / 100)).toFixed(2)) : product.price;
+        const cartItem = {
+            ...product,
+            quantity,
+            finalPrice,
+        };
+        dispatch(addToCart(cartItem));
+    };
+
+    const offer = product.isInSale ? parseFloat((product.price * (1 - product.discount / 100)).toFixed(2)) : product.price;
 
   return (
     <>
@@ -151,13 +162,17 @@ const ProductInfos = () => {
                         <button onClick={handleDecrement}>-</button>
                         <input type="number" 
                         value={quantity} 
-                        onChange={(e) => setQuantity(parseInt(e.target.value))}
+                        onChange={(e) => setQuantity(Number(e.target.value) || 1)}
+                        min="1"
                         className='w-16 text-center hide-arrow'
                         style={{ appearance: 'textfield' }}
                         />
                         <button onClick={handleIncrement}>+</button>
                     </div>
-                    <button className=' w-56 h-16 border rounded-2xl border-black font-poppins-regular text-xl'>Add To Cart</button>
+                    <button 
+                        className=' w-56 h-16 border rounded-2xl border-black font-poppins-regular text-xl'
+                        onClick={handleAddToCart}
+                    >Add To Cart</button>
                 </div>
                 
                 <div className='flex text-gray4 font-poppins-regular pt-12 mb-12 gap-2 border-t border-gray6 md:w-104'>
