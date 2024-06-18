@@ -14,45 +14,45 @@ function App() {
   return (
     <>
       <Header />
+     
+        <Routes>
+          <Route 
+            path="/" 
+            element={<HomePage/>}
+          />
 
-      <Routes>
-        <Route 
-          path="/" 
-          element={<HomePage/>}
-        />
+          <Route 
+            path="/shop"
+            element={<Shop/>}
+          />
 
-        <Route 
-          path="/shop"
-          element={<Shop/>}
-        />
+          <Route 
+            path="/about"
+            element={<About/>}
+          />
 
-        <Route 
-          path="/about"
-          element={<About/>}
-        />
+          <Route 
+            path="/contact"
+            element={<Contact/>}
+          />
 
-        <Route 
-          path="/contact"
-          element={<Contact/>}
-        />
+          <Route
+            path="/product/:id"
+            element={<ProductDetail/>}
+          />
+          
+          <Route 
+            path="/cart"
+            element={<Cart/>}
+          />
 
-        <Route
-          path="/product/:id"
-          element={<ProductDetail/>}
-        />
+          <Route
+            path="checkout"
+            element={<Checkout/>}
+          />
+          
+        </Routes>
         
-        <Route 
-          path="/cart"
-          element={<Cart/>}
-        />
-
-        <Route
-          path="checkout"
-          element={<Checkout/>}
-        />
-        
-      </Routes>
-
       <Footer/>
     </>
   )

@@ -3,6 +3,8 @@ import { Product } from '../types/product'
 import LikeImg from '../assets/images/heart.png'
 import ShareImg from '../assets/images/gridicons_share.png'
 import CompImg from '../assets/images/griicons_compare.png'
+import { useDispatch } from 'react-redux'
+import { addToCart } from '../action/cartAction'
 
 type CardProps = {
   product: Product;
@@ -12,6 +14,12 @@ const Card = ( { product }: CardProps) => {
 
     const offer = product.isInSale ? (product.price * (1 - product.discount / 100)).toFixed(2) : product.price;
     
+    const dispatch = useDispatch();
+
+    const handleAddToCart = () => {
+      dispatch(addToCart(product));
+    }
+
     return (
         <>
           <Link to={`/product/${product.id}`} className='relative group' >
@@ -44,9 +52,14 @@ const Card = ( { product }: CardProps) => {
                     )}
                     <div className='absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity'>
                         <div className='text-center'>
-                            <Link to={'/shopcart'}>
-                              <button className='bg-white text-mostarda w-49 h-12 font-poppins-semibold text-center '>Add to Cart</button>
-                            </Link>                               
+
+                              <button 
+                                className='bg-white text-mostarda w-49 h-12 font-poppins-semibold text-center'
+                                onClick={handleAddToCart}
+                              >
+                                Add to Cart
+                              </button>
+                                                         
                             <div className='flex gap-5 text-white mt-5'>
                                 <div className='flex items-center '>
                                   <img src={ShareImg} alt="Share icon" className=' w-4 h-4' />
