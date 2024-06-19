@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { Product } from '../types/product';
 import axios from 'axios';
 import Card from './Card';
@@ -28,7 +28,7 @@ const ProductInfos = () => {
     const [selectedInfo, setSelectedInfo] = useState<'description' | 'addInfo'>('description');
     const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
     const dispatch = useDispatch();
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
     //const cartItems = useSelector((state: RootState) => state.cart.items);
     //console.log(cartItems)
 
@@ -93,9 +93,9 @@ const ProductInfos = () => {
             ...product,
             finalPrice,
         };
-        console.log(cartItem)
+        //console.log(cartItem)
         dispatch(addToCart(cartItem, quantity));
-        navigate('/cart')
+        //navigate('/cart')
     };
 
     

@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {
+      borderRadius: {
+        '4xl': '3rem',
+      },
       fontFamily: {
         'montserrat-bold': ['Montserrat-bold', 'sans-serif'],
         'poppins-bold': ['Poppins-bold', 'sans-serif'],
