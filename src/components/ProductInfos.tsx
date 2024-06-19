@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Product } from '../types/product';
 import axios from 'axios';
 import Card from './Card';
@@ -15,6 +15,8 @@ import ProductImg03 from '../assets/images/Asgaard sofa 3.png'
 import FaceIcon from '../assets/images/akar-icons_facebook-fill.png'
 import Twitter from '../assets/images/Twitter1.png'
 import Linkedin from '../assets/images/akar-icons_linkedin-box-fill.png'
+//import { useSelector } from 'react-redux';
+//import { RootState } from '../reducers/rootReducer';
 
 
 const ProductInfos = () => {
@@ -26,6 +28,10 @@ const ProductInfos = () => {
     const [selectedInfo, setSelectedInfo] = useState<'description' | 'addInfo'>('description');
     const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    //const cartItems = useSelector((state: RootState) => state.cart.items);
+    //console.log(cartItems)
+
 
     const images = [ProductImg03, ProductImg01, ProductImg02, ProductImg03];
     const starImg = Array(4).fill(Star)
@@ -79,15 +85,20 @@ const ProductInfos = () => {
         setSelectedInfo(field);
     };
 
+    
+
     const handleAddToCart = () => {
         const finalPrice = product.isInSale ? parseFloat((product.price * (1 - product.discount / 100)).toFixed(2)) : product.price;
         const cartItem = {
             ...product,
-            quantity,
             finalPrice,
         };
-        dispatch(addToCart(cartItem));
+        console.log(cartItem)
+        dispatch(addToCart(cartItem, quantity));
+        navigate('/cart')
     };
+
+    
 
     const offer = product.isInSale ? parseFloat((product.price * (1 - product.discount / 100)).toFixed(2)) : product.price;
 

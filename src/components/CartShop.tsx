@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux"
 //import { RootState } from "../store/store";
 import { RootState } from "../reducers/rootReducer";
@@ -6,7 +5,7 @@ import { deleteFromCart, updateItemQuant } from '../action/cartAction'
 import Trash from '../assets/images/ant-design_delete-filled.png'
 
 const CartShop = () => {
-    const [quantity, setQuantity] = useState<number>(1);
+    
     const cartItems = useSelector((state: RootState) => state.cart.items);
     const dispatch = useDispatch();
     
@@ -23,17 +22,29 @@ const CartShop = () => {
 
     const total = cartItems.reduce((acum, item) => acum + item.finalPrice * item.quantity, 0);
 
-    const handleIncrement = () => setQuantity(prev => prev + 1);
-    const handleDecrement = () => setQuantity(prev => (prev > 1 ? prev - 1 : 1));
+    const handleIncrement = (id: number) => {
+        const item = cartItems.find(item => item.id === id)
+        console.log(item)
+        dispatch(updateItemQuant(id, item!.quantity + 1));
+        
+    }
+
+    const handleDecrement = (id: number) => {
+        const item = cartItems.find(item => item.id === id)
+        dispatch(updateItemQuant(id, item!.quantity - 1));
+    }
+
+    //const handleIncrement = () => setQuantity(prev => prev + 1);
+    //const handleDecrement = () => setQuantity(prev => (prev > 1 ? prev - 1 : 1));
 
 
   return (
     <>
       <div className='flex w-full px-24 py-18'>
           
-        {/* {cartItems.length === 0 ? (
+        {cartItems.length === 0 ? (
           <h2 className=" font-poppins-semibold text-3xl text-center">Your cart is empty</h2>
-          ) : ( */} 
+          ) : ( 
             <div className="flex w-full gap-8">
                 <div className="flex flex-col md:w-2/3 ">
                     <div className="flex justify-start gap-12 items-center h-14 bg-bege">
@@ -52,7 +63,7 @@ const CartShop = () => {
                             <span className="text-gray4 font-poppins-regular w-28">{item.finalPrice}</span>
                             
                             <div className=' flex items-center justify-between w-28 h-16 border px-3 border-gray4 rounded-xl '>
-                                <button onClick={handleDecrement}>-</button>
+                                <button onClick={() => handleDecrement(item.id)}>-</button>
                                 <input 
                                   type="number" 
                                   value={item.quantity} 
@@ -60,14 +71,14 @@ const CartShop = () => {
                                   className='w-16 text-center hide-arrow'
                                   style={{ appearance: 'textfield' }}
                                 />
-                                <button onClick={handleIncrement}>+</button>
+                                <button onClick={() => handleIncrement(item.id)}>+</button>
                             </div>
 
                             <span className=" w-28 font-poppins-regular">{(item.finalPrice * item.quantity).toFixed(2)}</span>
                             
                             <img src={Trash} alt="Trash icon" 
                                 onClick={() => handleDeleteFromCart(item.id)} 
-                                className=" w-7 h-7"
+                                className=" w-7 h-7 cursor-pointer"
                             />
 
                           </li>
@@ -91,7 +102,7 @@ const CartShop = () => {
             
             
             </div>
-        {/*   )} */} 
+          )} 
                   
       </div>
     </>

@@ -1,14 +1,23 @@
+import { useState } from "react"
 import { Link } from "react-router-dom"
 
 import Logo from '../assets/images/Meubel House_Logos-05.png'
 import UserImg from '../assets/images/login.png'
 import ShopCart from '../assets/images/shop-cart.png'
+import CartModal from "./CartModal"
 
 const Header = () => {
+
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const handleCartClick = () => {
+        setIsModalVisible(!isModalVisible)
+    };
+
+
   return (
     <header className=" h-24">
-        <div className=" mx-auto h-full flex justify-between items-center">
-
+        <nav className=" mx-auto h-full flex justify-between items-center">    
             <Link to={'/'} >
                 <div className="flex gap-2 pl-14 items-center">
                     <img src={Logo} alt="Logotipo da Empresa" className=' w-12 h-8' />
@@ -36,14 +45,22 @@ const Header = () => {
                 </ul>
             </div>
 
-            <div className="flex gap-9 mr-28 font-normal">
-                <img src={UserImg} alt="" />
-                <Link to={'/shopcart'}>
-                    <img src={ShopCart}  alt="" />
+            <div className="flex gap-9 mr-28 font-normal relative">
+                <Link to={'/login'}>
+                    <img src={UserImg} alt="User icon" />
                 </Link>
+                
+                
+                <img src={ShopCart}  alt="Cart icon" onClick={handleCartClick} className=" cursor-pointer" />
+                <CartModal 
+                    isVisible={isModalVisible} 
+                    onClose={() => setIsModalVisible(false)}   
+                />
+                    
+                
             </div>
 
-        </div>
+        </nav>
         
     </header>
   )
