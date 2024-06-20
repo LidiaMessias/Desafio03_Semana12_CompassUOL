@@ -1,29 +1,34 @@
-import { useEffect } from "react";
-import { useForms, useForm } from "react-hook-form"
+import { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { updateFormData } from '../action/updateFormDataAction'
 import { useDispatch ,useSelector } from "react-redux"
 import { RootState } from "../reducers/rootReducer";
 import { FormSchema, userFormSchema } from "../types/userFormSchema";
-import * as z from "zod";
+
 
 const PlaceOrder = () => {
+
+    const submitRef = useRef<HTMLButtonElement>(null);
 
     const cartItems = useSelector((state: RootState) => state.cart.items);
     const billingData = useSelector((state: RootState) => state.updateForm.formData);
     console.log(billingData);
 
-    const { register, handleSubmit, setValue, watch, formState: { errors }} = useForm <FormSchema>({
+    const { register, handleSubmit, setValue, watch, formState: { errors }, reset} = useForm <FormSchema>({
         resolver: zodResolver(userFormSchema),
     });
 
     const dispatch = useDispatch();
+    const [isSuccess, setIsSuccess] = useState(false);
 
     const onSubmit = (data: FormSchema) => {
         dispatch(updateFormData(data));
         console.log("Form data submited: ", data);
         reset();
+        setIsSuccess(true);
+        setTimeout(() => setIsSuccess(false), 3000);
     };
 
     const zipCode = watch('zipCode');
@@ -44,6 +49,7 @@ const PlaceOrder = () => {
     }, [zipCode, setValue]);
 
     const total = cartItems.reduce((acum, item) => acum + item.finalPrice * item.quantity, 0);
+    
 
   return (
     <div className='flex justify-between pt-16 pb-18 mb-12 px-28'>
@@ -55,60 +61,61 @@ const PlaceOrder = () => {
             <form onSubmit={handleSubmit(onSubmit)} >        
                 <div className='flex gap-6 mb-9'>
                     <div className='flex flex-col gap-5 w-94'>
-                        <label htmlFor="" className=' font-poppins-medium'>First Name</label>
-                        <input type="text" {...register("firstName")} className=' h-18 pl-7 py-6 border border-gray4 rounded-xl font-poppins-regular '/>
+                        <label htmlFor="firstName" className=' font-poppins-medium'>First Name</label>
+                        <input type="text" id="firstName" {...register("firstName")} className=' h-18 pl-7 py-6 border border-gray4 rounded-xl font-poppins-regular'/>
                         {errors.firstName && <small className="text-red-500 italic">{errors.firstName.message}</small>}
                     </div>
                     <div className='flex flex-col gap-5 w-94'>
-                        <label htmlFor="" className=' font-poppins-medium'>Last Name</label>
-                        <input type="text" {...register("lastName")}  className=' h-18 pl-7 py-6 border border-gray4 rounded-xl font-poppins-regular '/>
-                        {errors.lastName && <p>{errors.lastName.message}</p>}
+                        <label htmlFor="lastName" className=' font-poppins-medium'>Last Name</label>
+                        <input type="text" id="lastName" {...register("lastName")}  className=' h-18 pl-7 py-6 border border-gray4 rounded-xl font-poppins-regular '/>
+                        {errors.lastName && <small className="text-red-500 italic">{errors.lastName.message}</small>}
                     </div>
                 </div>
                 <div className='flex flex-col gap-5 mb-9'>
-                    <label htmlFor="" className=' font-poppins-medium'>Company Name (Optional)</label>
-                    <input type="text" {...register("company")} className=' h-18 pl-7 py-6 border border-gray4 rounded-xl w-95 font-poppins-regular ' />
+                    <label htmlFor="company" className=' font-poppins-medium'>Company Name (Optional)</label>
+                    <input type="text" id="company" {...register("company")} className=' h-18 pl-7 py-6 border border-gray4 rounded-xl w-95 font-poppins-regular ' />
                 </div>
                 <div className='flex flex-col gap-5 mb-9'>
-                    <label htmlFor="" className=' font-poppins-medium'>ZIP code</label>
-                    <input type="text" {...register("zipCode")} className=' h-18 pl-7 py-6 border border-gray4 rounded-xl w-95 font-poppins-regular ' />
-                    {errors.zipCode && <p>{errors.zipCode.message}</p>}
+                    <label htmlFor="zipCode" className=' font-poppins-medium'>ZIP code</label>
+                    <input type="text" id="zipCode" {...register("zipCode")} className=' h-18 pl-7 py-6 border border-gray4 rounded-xl w-95 font-poppins-regular ' />
+                    {errors.zipCode && <small className="text-red-500 italic">{errors.zipCode.message}</small>}
                 </div>
                 <div className='flex flex-col gap-5 mb-9'>
-                    <label htmlFor="" className=' font-poppins-medium'>Country / Region</label>
-                    <input type="text" {...register("address.country")} className=' h-18 pl-7 py-6 border border-gray4 rounded-xl w-95 font-poppins-regular ' />
-                    {errors.address?.country && <p>{errors.address?.country.message}</p>}
+                    <label htmlFor="country" className=' font-poppins-medium'>Country / Region</label>
+                    <input type="text" id="country" {...register("address.country")} className=' h-18 pl-7 py-6 border border-gray4 rounded-xl w-95 font-poppins-regular ' />
+                    {errors.address?.country && <small className="text-red-500 italic">{errors.address?.country.message}</small>}
                 </div>
-               {/* {zipCode?.length === 8 && ( */}
-                    <>
-                        <div className='flex flex-col gap-5 mb-9'>
-                            <label htmlFor="" className=' font-poppins-medium'>Street address</label>
-                            <input type="text" {...register("address.street")} className=' h-18 pl-7 py-6 border border-gray4 rounded-xl w-95 font-poppins-regular'/>
-                        </div>
-                        <div className='flex flex-col gap-5 mb-9'>
-                            <label htmlFor="" className=' font-poppins-medium'>Town / City</label>
-                            <input type="text" {...register("address.town")} className=' h-18 pl-7 py-6 border border-gray4 rounded-xl w-95 font-poppins-regular' />
-                        </div>
-                        <div className='flex flex-col gap-5 mb-9'>
-                            <label htmlFor="" className=' font-poppins-medium'>Province</label>
-                            <input type="text" {...register("address.province")} className=' h-18 pl-7 py-6 border border-gray4 rounded-xl w-95 font-poppins-regular'/>
-                        </div>
-                    </>
-              {/* )} */}
-                
+                                  
                 <div className='flex flex-col gap-5 mb-9'>
-                    <label htmlFor="" className=' font-poppins-medium'>Add-on address</label>
-                    <input type="text" {...register("address.adAddress")} className=' h-18 pl-7 py-6 border border-gray4 rounded-xl w-95 font-poppins-regular '/>
+                    <label htmlFor="street" className=' font-poppins-medium'>Street address</label>
+                    <input type="text" id="street" {...register("address.street")} className=' h-18 pl-7 py-6 border border-gray4 rounded-xl w-95 font-poppins-regular'/>
+                    {errors.address?.street && <small className="text-red-500 italic">{errors.address?.street.message}</small>}
                 </div>
                 <div className='flex flex-col gap-5 mb-9'>
-                    <label htmlFor="" className=' font-poppins-medium'>Email address</label>
-                    <input type="text" {...register("email")} className=' h-18 pl-7 py-6 border border-gray4 rounded-xl w-95 font-poppins-regular '/>
-                    {errors.email && <p>{errors.email.message}</p>}
+                    <label htmlFor="town" className=' font-poppins-medium'>Town / City</label>
+                    <input type="text" id="town" {...register("address.town")} className=' h-18 pl-7 py-6 border border-gray4 rounded-xl w-95 font-poppins-regular' />
+                    {errors.address?.town && <small className="text-red-500 italic">{errors.address?.town.message}</small>}
                 </div>
                 <div className='flex flex-col gap-5 mb-9'>
-                    <label htmlFor="" className=' font-poppins-medium'></label>
-                    <input type="text" {...register("infoadd")} placeholder='Additional information' className=' h-18 pl-7 py-6 border border-gray4 rounded-xl w-95 font-poppins-regular '/>
+                    <label htmlFor="province" className=' font-poppins-medium'>Province</label>
+                    <input type="text" id="province" {...register("address.province")} className=' h-18 pl-7 py-6 border border-gray4 rounded-xl w-95 font-poppins-regular'/>
+                    {errors.address?.province && <small className="text-red-500 italic">{errors.address?.province.message}</small>}
                 </div>
+                            
+                <div className='flex flex-col gap-5 mb-9'>
+                    <label htmlFor="adAddress" className=' font-poppins-medium'>Add-on address</label>
+                    <input type="text" id="adAddress" {...register("address.adAddress")} className=' h-18 pl-7 py-6 border border-gray4 rounded-xl w-95 font-poppins-regular '/>
+                </div>
+                <div className='flex flex-col gap-5 mb-9'>
+                    <label htmlFor="mail" className=' font-poppins-medium'>Email address</label>
+                    <input type="text" id="mail" {...register("email")} className=' h-18 pl-7 py-6 border border-gray4 rounded-xl w-95 font-poppins-regular '/>
+                    {errors.email && <small className="text-red-500 italic">{errors.email.message}</small>}
+                </div>
+                <div className='flex flex-col gap-5 mb-9'>
+                    <label htmlFor="infoadd" className=' font-poppins-medium'></label>
+                    <input type="text" id="infoadd" {...register("infoadd")} placeholder='Additional information' className=' h-18 pl-7 py-6 border border-gray4 rounded-xl w-95 font-poppins-regular '/>
+                </div>
+                <button type="submit" ref={submitRef}></button>
             </form>
         </div>
         {/*</form>*/}
@@ -139,8 +146,9 @@ const PlaceOrder = () => {
                 <span className='font-poppins-regular'>Total</span>
                 <span className='font-poppins-bold text-2xl text-mostarda'>Rs. {total.toFixed(2)}</span>
             </div>
-            <div className="flex justify-center">
-                <button className=" px-24 py-4 border rounded-2xl font-poppins-regular text-xl cursor-pointer">Place order</button>
+            <div className="flex flex-col justify-center items-center">
+                <button className=" px-24 py-4 border rounded-2xl font-poppins-regular text-xl cursor-pointer" onClick={() => submitRef.current?.click()}>Place order</button>
+                {isSuccess && <button className=" px-20 py-4 mt-10 bg-green-700 text-white font-poppins-medium text-xl rounded-2xl">Order placed successfully</button>}
             </div>
 
         </div>
