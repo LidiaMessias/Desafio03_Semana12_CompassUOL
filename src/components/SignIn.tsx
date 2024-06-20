@@ -27,56 +27,70 @@ const SignIn = () => {
     }
 
     return (
-        <div>
-            <div className="flex gap-2 pl-14 items-center">
+    <>
+    <div className='flex justify-center items-center py-20'>
+        <div className='flex  flex-col justify-center gap-5 px-5 py-8 mx-auto w-1/3 border border-gray6 shadow-xl rounded-xl'>
+            <div className="flex gap-2 justify-center items-center">
                 <img src={Logo} alt="Logotipo da Empresa" className=' w-12 h-8' />
                 <span className=" text-4xl font-montserrat-bold">Furniro</span>
             </div>
             <form>                                                                                            
-                <div>
-                    <label htmlFor="email-address">
-                        Email address
-                    </label>
+                <div className='flex flex-col gap-2'>
+                    <label htmlFor="email-address" className=' font-poppins-regular'>Email address</label>
                     <input
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}  
                         required                                    
-                        placeholder="Email address"                                
+                        placeholder="abcd@efgh.com" 
+                        className=' border border-gray4 rounded-lg h-8 py-2 pl-3 font-poppins-regular'                               
                     />
                 </div>
 
-                <div>
-                    <label htmlFor="password">
-                        Password
-                    </label>
+                <div className='flex flex-col gap-2 my-5'>
+                    <label htmlFor="password" className=' font-poppins-regular'>Password</label>
                     <input
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)} 
                         required                                 
-                        placeholder="Password"              
+                        placeholder="Enter your password"   
+                        className=' border border-gray4 rounded-lg h-8 py-2 pl-3 font-poppins-regular'            
                     />
                 </div>                                             
+
+                <div className='flex justify-center mb-5 mt-8'>       
+                    <Link to={'/'}>
+                        <button
+                            //type="submit" 
+                            className=' bg-mostarda font-poppins-semibold text-white w-28 py-2 rounded'
+                            onClick={onSubmit}                        
+                        >  
+                            Log In                                
+                        </button>
+                    </Link>
+                </div>
                 
-                <button
-                    type="submit" 
-                    onClick={onSubmit}                        
-                >  
-                    Sign up                                
-                </button>
-                <LoginBtns/>
-                                                                
+                <LoginBtns/>                                             
             </form>
             
-            <p>
-                Already have an account?{' '}
-                <Link to="/login" >
-                    Sign in
-                </Link>
-            </p>   
+            <div className=' flex justify-center'>
+                <p className=' font-poppins-regular'>
+                    Already have an account?{'    '}
+                    <span className='font-poppins-semibold text-mostarda'>
+                        <Link to="/signin" >
+                            Sign in
+                        </Link>
+                    </span>
+                    
+                </p>
+
+            </div>
+            
 
         </div>
+    </div>
+    </>
   )
 }
 

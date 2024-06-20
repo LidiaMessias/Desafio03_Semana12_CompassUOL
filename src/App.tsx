@@ -10,6 +10,7 @@ import ProductDetail from "./pages/ProductDetail"
 import Checkout from "./pages/Checkout"
 import SignIn from "./components/SignIn"
 import Login from "./pages/Login"
+import SecureRoute from "./components/SecureRoute"
 
 function App() {
 
@@ -50,7 +51,11 @@ function App() {
 
           <Route
             path="/checkout"
-            element={<Checkout/>}
+            element={
+              <SecureRoute>
+                <Checkout/>
+              </SecureRoute> 
+            }
           />
           
           <Route 

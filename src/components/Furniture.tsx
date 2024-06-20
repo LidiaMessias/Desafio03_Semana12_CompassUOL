@@ -18,7 +18,7 @@ const Furniture = () => {
         <img src={Foto38} alt="Mesa com um notebook" className=' absolute left-28 top-32'/>
         <img src={Foto37} alt="Cadeira estilo retrô" className=' absolute left-0 bottom-0' />
         <img src={Foto39} alt="Duas mesinhas de canto" className='absolute bottom-20  left-56' />
-        <img src={Foto40} alt="Sala de jantar" className='absolute bottom-44 right-104 ' />
+        <img src={Foto40} alt="Sala de jantar" className='absolute bottom-44 right-104 z-50' />
         <img src={Foto41} alt="Quadro de uma sala de estar" className='absolute bottom-6 right-98' />
         <img src={Foto43} alt="Quarto de casal" className=' absolute bottom-72 right-72' />
         <img src={Foto44} alt="Parede de cozinha" className='absolute bottom-16 right-28' />
