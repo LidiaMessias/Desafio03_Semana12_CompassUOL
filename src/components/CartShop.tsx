@@ -43,7 +43,7 @@ const CartShop = () => {
       <div className='flex w-full px-24 py-18'>
           
         {cartItems.length === 0 ? (
-          <h2 className=" font-poppins-semibold text-3xl text-center">Your cart is empty</h2>
+          <h2 className=" font-poppins-semibold text-3xl mx-auto">Your cart is empty</h2>
           ) : ( 
             <div className="flex w-full gap-8">
                 <div className="flex flex-col md:w-2/3 ">
