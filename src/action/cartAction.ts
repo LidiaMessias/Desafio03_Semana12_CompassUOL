@@ -3,6 +3,7 @@ import { Product } from "../types/product";
 export const ADD_TO_CART = 'ADD_TO_CART';
 export const DELETE_FROM_CART = 'DELETE_FROM_CART';
 export const UPDATE_ITEM_QUANTITY = 'UPDATE_ITEM_QUANTITY';
+export const RESET_CART = 'RESET_CART';
 
 export type CartItem = Product & {
     quantity: number;
@@ -28,7 +29,11 @@ type UpdateItemQuantity = {
     };
 }
 
-export type CartActionTypes = AddToCartAction | DeleteFromCartAction | UpdateItemQuantity;
+type ResetCartAction = {
+    type: typeof RESET_CART;
+}
+
+export type CartActionTypes = AddToCartAction | DeleteFromCartAction | UpdateItemQuantity | ResetCartAction;
 
 export const addToCart = (product: Product, quantity: number = 1): AddToCartAction => {
     const finalPrice = product.isInSale ? parseFloat((product.price * (1 - product.discount / 100)).toFixed(2)) : product.price;
@@ -46,5 +51,9 @@ export const deleteFromCart = (id: number): DeleteFromCartAction => ({
 export const updateItemQuant = (id: number, quantity: number): UpdateItemQuantity => ({
     type: UPDATE_ITEM_QUANTITY,
     payload: {id, quantity},
+});
+
+export const resetCart = (): ResetCartAction => ({
+    type: RESET_CART,
 });
 

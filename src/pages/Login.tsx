@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../services/firebaseConfig'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import LoginBtns from '../components/LoginBtns'
 import Logo from '../assets/images/Meubel House_Logos-05.png'
 
@@ -9,28 +9,28 @@ const Login = () => {
 
     const [email, setEmail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
-    //const [emptyField, setEmptyField] = useState(false)
     const navigate = useNavigate()
+    const location = useLocation();
+    const from = location.state?.from?.pathname || '/';
 
     const onLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
         if (!email || !password) {
             console.error("Please enter both email and password.")
-            //setEmptyField(true);
             return
         }
 
-        signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
+        try {
+            const userCredential = await signInWithEmailAndPassword (auth, email, password);
             const user = userCredential.user;
-            navigate('/cart')
-            console.log(user)
-        })
-        .catch((error) => {
+            navigate(from, { replace: true });
+            console.log(user);
+
+        } catch (error) {
             console.error("Invalid email or password",error)
-        })
-    }
+        }
+    };
 
 
   return (
@@ -66,16 +66,14 @@ const Login = () => {
                 />
             </div>                                             
 
-            <div className='flex justify-center mb-5 mt-8'>       
-                <Link to={'/'}>
+            <div className='flex justify-center mb-5 mt-8'>                  
                     <button
                         //type="submit" 
                         className=' bg-mostarda font-poppins-semibold text-white w-28 py-2 rounded'
                         onClick={onLogin}                        
                     >  
                         Log In                                
-                    </button>
-                </Link>
+                    </button>              
             </div>
             
             <LoginBtns/>                                             
@@ -84,16 +82,13 @@ const Login = () => {
         <div className=' flex justify-center'>
             <p className=' font-poppins-regular'>
                 Don´t have an account?{'    '}
-                <span className='font-poppins-semibold text-mostarda'>
+                <span className='font-poppins-semibold text-mostarda cursor-pointer'>
                     <Link to="/signin" >
                         Register
                     </Link>
-                </span>
-                
+                </span>          
             </p>
-
         </div>
-           
 
     </div>
     </div>

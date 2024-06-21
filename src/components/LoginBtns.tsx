@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaceAuth, GoogleAuth } from '../services/firebaseConfig';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import face from '../assets/images/FacebookBtn.png'
 import google from '../assets/images/Google.png'
@@ -8,19 +8,21 @@ import google from '../assets/images/Google.png'
 const LoginBtns = () => {
 
     const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || '/';
 
     const facebookLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         const user = await FaceAuth();
         console.log(user)
-        navigate('/');
+        navigate(from, { replace: true });
     }
 
     const googleLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         const user = await GoogleAuth();
         console.log(user)
-        navigate('/');
+        navigate(from, { replace: true });
     }
 
 

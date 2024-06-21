@@ -1,5 +1,5 @@
 //import { CartState } from "../action/types";
-import { CartActionTypes, ADD_TO_CART, DELETE_FROM_CART, UPDATE_ITEM_QUANTITY } from "../action/cartAction";
+import { CartActionTypes, ADD_TO_CART, DELETE_FROM_CART, UPDATE_ITEM_QUANTITY, RESET_CART } from "../action/cartAction";
 import { CartItem } from '../action/cartAction'
 
 type CartState = {
@@ -42,6 +42,9 @@ const cartReducer = (state = initialState, action: CartActionTypes): CartState =
                     item.id === action.payload.id ? { ...item, quantity: action.payload.quantity } : item
                 ),
             };
+
+        case RESET_CART:
+            return initialState;
 
         default:
             return state;

@@ -11,7 +11,7 @@ export const userFormSchema = z.object({
         country: z.string().min(3, "Enter at least 3 characters."),
         street: z.string().min(3, "Street is required!"),
         town: z.string().min(3, "Town is required!"),
-        province: z.string().min(2, "Província is required!"), 
+        province: z.string().min(2, "Province is required!"), 
         adAddress: z.string().optional(),     
     }).optional()
 });

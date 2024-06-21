@@ -6,6 +6,8 @@ import { updateFormData } from '../action/updateFormDataAction'
 import { useDispatch ,useSelector } from "react-redux"
 import { RootState } from "../reducers/rootReducer";
 import { FormSchema, userFormSchema } from "../types/userFormSchema";
+import Elipse1 from '../assets/images/Ellipse1.png'
+import { resetCart } from "../action/cartAction";
 
 
 const PlaceOrder = () => {
@@ -26,6 +28,7 @@ const PlaceOrder = () => {
     const onSubmit = (data: FormSchema) => {
         dispatch(updateFormData(data));
         console.log("Form data submited: ", data);
+        dispatch(resetCart());
         reset();
         setIsSuccess(true);
         setTimeout(() => setIsSuccess(false), 3000);
@@ -146,8 +149,32 @@ const PlaceOrder = () => {
                 <span className='font-poppins-regular'>Total</span>
                 <span className='font-poppins-bold text-2xl text-mostarda'>Rs. {total.toFixed(2)}</span>
             </div>
+
+            <div className="flex gap-4 mt-6 mb-3 items-center">
+                <img src={Elipse1} alt="Radio checked" className=" w-3 h-3" />
+                <p className=" font-poppins-regular">Direct Bank Transfer</p>
+            </div>                               
+            <p className=" font-poppins-light text-gray4">Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.</p>
+
+            <form action="">   
+                <div className="flex flex-col items-start my-6 ">
+                    <div className="flex gap-4 font-poppins-medium text-gray4">
+                        <input type="radio" name="meth_payment" id="trasnfer" value="Transfer"/>
+                        <label htmlFor="transfer">Direct Bank Transfer</label>
+                    </div>
+                    <div className="flex gap-4 font-poppins-medium text-gray4">
+                        <input type="radio" name="meth_payment" id="cash" value="Cash" />
+                        <label htmlFor="cash">Cash on Delivery</label>
+                    </div>
+                </div>
+                   
+
+                <p className=" font-poppins-regular mb-10">Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our <span className=" font-poppins-semibold">privacy policy.</span> </p>
+                
+            </form>
+
             <div className="flex flex-col justify-center items-center">
-                <button className=" px-24 py-4 border rounded-2xl font-poppins-regular text-xl cursor-pointer" onClick={() => submitRef.current?.click()}>Place order</button>
+                <button className=" px-24 py-4 border border-black rounded-2xl font-poppins-regular text-xl cursor-pointer" onClick={() => submitRef.current?.click()}>Place order</button>
                 {isSuccess && <button className=" px-20 py-4 mt-10 bg-green-700 text-white font-poppins-medium text-xl rounded-2xl">Order placed successfully</button>}
             </div>
 

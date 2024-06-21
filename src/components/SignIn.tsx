@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../services/firebaseConfig'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, Link, useLocation } from 'react-router-dom'
 import Logo from '../assets/images/Meubel House_Logos-05.png'
 import LoginBtns from './LoginBtns'
 
@@ -11,19 +11,29 @@ const SignIn = () => {
     const [email, setEmail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
     const navigate = useNavigate()
+    //const [redirectTo, setRedirectTo] = useState<string | null>(null);
+    const location = useLocation();
+    const from = location.state?.from?.pathname || '/';
+
+
 
     const onSubmit =  async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
 
-        await createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
-            // Signed in
+        if (!email || !password) {
+            console.error("Please enter both email and password.")
+            return
+        }
+
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
-            console.log(user)
-            navigate('/cart')
-        })
-        .catch((error) => {
+            navigate(from, { replace: true });
+            console.log(user); 
+
+        } catch (error) {
             console.error("Error creating acount",error)
-        })
+        }
     }
 
     return (
@@ -60,15 +70,12 @@ const SignIn = () => {
                 </div>                                             
 
                 <div className='flex justify-center mb-5 mt-8'>       
-                    <Link to={'/'}>
                         <button
-                            //type="submit" 
                             className=' bg-mostarda font-poppins-semibold text-white w-28 py-2 rounded'
                             onClick={onSubmit}                        
                         >  
                             Log In                                
                         </button>
-                    </Link>
                 </div>
                 
                 <LoginBtns/>                                             
@@ -77,7 +84,7 @@ const SignIn = () => {
             <div className=' flex justify-center'>
                 <p className=' font-poppins-regular'>
                     Already have an account?{'    '}
-                    <span className='font-poppins-semibold text-mostarda'>
+                    <span className='font-poppins-semibold text-mostarda cursor-pointer'>
                         <Link to="/signin" >
                             Sign in
                         </Link>
