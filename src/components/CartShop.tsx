@@ -87,11 +87,11 @@ const CartShop = () => {
                 </div>
                 <div className="md:w-1/3 flex flex-col justify-center items-center bg-bege pb-15 pt-4">
                     <h3 className=" font-poppins-semibold text-3xl">Cart Totals</h3>
-                    <div className=" flex justify-between gap-10 items-center mt-11 mb-8 w-52">
+                    <div className=" flex justify-between gap-10 items-center mt-11 mb-8 ">
                       <span className="font-poppins-medium text-start w-16 ">Subtotal</span>
                       <span className=" font-poppins-regular text-gray4 w-36 text-end">Rs. {total.toFixed(2)}</span>
                     </div>
-                    <div className=" flex justify-between gap-10 items-center mb-11 w-52">
+                    <div className=" flex justify-between gap-10 items-center mb-11">
                       <span className="font-poppins-medium text-start w-16 ">Total</span>
                       <span className="font-poppins-medium  text-xl text-mostarda w-36 text-end">Rs. {total.toFixed(2)}</span>
                     </div>

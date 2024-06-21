@@ -1,8 +1,35 @@
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { updateFormData } from '../action/updateFormDataAction'
+import { useDispatch ,useSelector } from "react-redux"
+import { RootState } from "../reducers/rootReducer";
+import { ContactSchema, contactSchema } from "../types/contactSchema";
+
 import LocalIcon from '../assets/images/localicon.png'
 import PhoneIcon from '../assets/images/phoneicon.png'
 import Timeicon from '../assets/images/timeicon.png'
+import { useState } from "react";
 
 const ContactForm = () => {
+
+    const contFormData = useSelector((state: RootState) => state.updateForm.formData);
+    console.log(contFormData)
+
+    const { register, handleSubmit, formState: { errors }, reset} = useForm <ContactSchema>({
+        resolver: zodResolver(contactSchema),
+    });
+
+    const dispatch = useDispatch();
+    const [onSuccess, setOnSuccess] = useState(false);
+
+    const onSubmit = (data: ContactSchema) => {
+        dispatch(updateFormData(data));
+        console.log("Form data submited: ", data);
+        reset();
+        setOnSuccess(true);
+        setTimeout(() => setOnSuccess(false), 3000);
+    };
+
   return (
     <div className='flex flex-col items-center pt-24 pb-15'>
         <h1 className=' font-poppins-semibold text-4xl'>Get In Touch With Us</h1>
@@ -27,27 +54,31 @@ const ContactForm = () => {
             </div>
 
             <div className=' pt-12 flex flex-col'>
-                <form action="">
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <div className=' flex flex-col mb-9 gap-6 '>
-                        <label htmlFor="" className=' font-poppins-medium'>Your Name</label>
-                        <input type="text" placeholder='Abc' className=' w-97 h-18 border pl-7 rounded-xl border-gray4 ' />
+                        <label htmlFor="name" className=' font-poppins-medium'>Your Name</label>
+                        <input type="text" id="name" {...register("name")} placeholder='Abc' className=' w-97 h-18 border pl-7 rounded-xl border-gray4 ' />
+                        {errors.name && <small className="text-red-500 italic">{errors.name.message}</small>}
                     </div>
                     <div className=' flex flex-col mb-9 gap-6 '>
-                        <label htmlFor="" className=' font-poppins-medium'> Email address</label>
-                        <input type="email" placeholder='Abc@def.com' className=' w-97 h-18 border pl-7 rounded-xl border-gray4' />
+                        <label htmlFor="email" className=' font-poppins-medium'> Email address</label>
+                        <input type="email" id="email" {...register("email")} placeholder='Abc@def.com' className=' w-97 h-18 border pl-7 rounded-xl border-gray4' />
+                        {errors.email && <small className="text-red-500 italic">{errors.email.message}</small>}
                     </div>
                     <div className=' flex flex-col mb-9 gap-6 '>
-                        <label htmlFor="" className=' font-poppins-medium'>Subject</label>
-                        <input type="text" placeholder='This is an optional' className=' w-97 h-18 pl-7 border rounded-xl border-gray4'/>
+                        <label htmlFor="subject" className=' font-poppins-medium'>Subject</label>
+                        <input type="text" id="subject" {...register("subject")} placeholder='This is an optional' className=' w-97 h-18 pl-7 border rounded-xl border-gray4'/>
                     </div>
                     <div className=' flex flex-col gap-6 mb-12'>
-                        <label htmlFor="" className=' font-poppins-medium'>Message</label>
-                        <textarea name="" id="" placeholder="Hi! I'd like to ask about..." className=' w-97 h-32 pl-7 pt-6 border rounded-xl border-gray4'></textarea>
+                        <label htmlFor="message" className=' font-poppins-medium'>Message</label>
+                        <textarea id="message" {...register("message")} placeholder="Hi! I'd like to ask about..." className=' w-97 h-32 pl-7 pt-6 border rounded-xl border-gray4'></textarea>
+                        {errors.message && <small className="text-red-500 italic">{errors.message.message}</small>}
                     </div>
                     
-                    <button className=' w-60 h-14 text-center py-3 bg-mostarda rounded-md font-poppins-regular text-white'>Submit</button>
+                    <button type="submit" className=' w-60 h-14 text-center py-3 bg-mostarda rounded-md font-poppins-regular text-white'>Submit</button>
+                    
                 </form>
-
+                {onSuccess && <button className=" px-20 py-4 mt-10 bg-green-700 text-white font-poppins-medium text-xl rounded-xl">Data sent successfully</button>}
             </div>
 
         </div>

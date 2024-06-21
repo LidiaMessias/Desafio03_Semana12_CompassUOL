@@ -13,7 +13,7 @@ export const userFormSchema = z.object({
         town: z.string().min(3, "Town is required!"),
         province: z.string().min(2, "Province is required!"), 
         adAddress: z.string().optional(),     
-    }).optional()
+    }).optional(),
 });
 
 export type FormSchema = z.infer<typeof userFormSchema>
