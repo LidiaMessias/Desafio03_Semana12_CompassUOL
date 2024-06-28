@@ -21,7 +21,7 @@ const ProductsList = () => {
 
         const getProducts = async () => {
             try {
-                const response = await axios.get<{ products: Product[] }>('https://run.mocky.io/v3/56248314-87db-4c19-b4ad-2982819a4352');
+                const response = await axios.get<{ products: Product[] }>('https://run.mocky.io/v3/b4042226-b0a8-4e9d-b279-f35ed977dce0');
                 const products = response.data.products;
 
                 setProducts(products);
@@ -88,7 +88,7 @@ const ProductsList = () => {
 
         </div>  
 
-        <div className=' flex justify-center items-center gap-10 mb-20'>
+        <div className=' flex justify-center items-center gap-5 mb-20'>
             {[...Array(totalPages)].map((_, index) => (
                 <button key={index}
                     onClick={() => handlePage(index + 1)}

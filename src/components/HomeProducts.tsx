@@ -13,7 +13,7 @@ const HomeProducts = () => {
 
         const getProducts = async () => {
           try {
-              const response = await axios.get<{ products: Product[] }>('https://run.mocky.io/v3/56248314-87db-4c19-b4ad-2982819a4352');
+              const response = await axios.get<{ products: Product[] }>('https://run.mocky.io/v3/b4042226-b0a8-4e9d-b279-f35ed977dce0');
               const allProducts = response.data.products;
 
               const aleat = allProducts.sort(() => 0.5 - Math.random());
