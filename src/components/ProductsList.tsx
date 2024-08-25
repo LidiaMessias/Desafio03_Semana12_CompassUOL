@@ -21,8 +21,8 @@ const ProductsList = () => {
 
         const getProducts = async () => {
             try {
-                const response = await axios.get<{ products: Product[] }>('https://run.mocky.io/v3/9ccf201e-8474-4f19-9a2c-67fbd7b4249c');
-                const products = response.data.products;
+                const response = await axios.get('http://localhost:3000/products');
+                const products = response.data;
 
                 setProducts(products);
                 setTotalProducts(products.length)
