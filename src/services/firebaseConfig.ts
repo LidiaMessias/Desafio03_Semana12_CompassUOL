@@ -2,12 +2,12 @@ import { initializeApp } from "firebase/app";
 import { getAuth, Auth, FacebookAuthProvider, GoogleAuthProvider, UserCredential, signInWithPopup } from "firebase/auth";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBn0xGFW52npp_cWEn995thyv1C6DShMto",
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
     authDomain: "desafio03-compassuol.firebaseapp.com",
     projectId: "desafio03-compassuol",
     storageBucket: "desafio03-compassuol.appspot.com",
-    messagingSenderId: "806461516063",
-    appId: "1:806461516063:web:11141010b26a17151ce82a"
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_FIREBASE_APP_ID
   };
 
   const app = initializeApp(firebaseConfig);
