@@ -52,10 +52,11 @@ npm install
 ### 3. Configurar Variáveis de Ambiente
 Crie um arquivo .env na raiz do projeto e adicione suas chaves do Firebase.
 Substitua os valores abaixo pelas chaves encontradas no seu Console do Firebase.
+```bash
 VITE_FIREBASE_API_KEY=your_api_key_here
 VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id_here
 VITE_FIREBASE_APP_ID=your_app_id_here
-
+```
 
 ### 4. Executar o Backend Simulado (JSON Server)
 Em um terminal separado, inicie o servidor que servirá os dados do arquivo db.json:
@@ -79,9 +80,9 @@ Neste projeto, optei pelo uso do TypeScript para garantir a segurança dos tipos
 
 ## 💻 Autor
 
-Desenvolvido por **Lidia L. Messias**
-Email: lidia.mess@gmail.com
-Este projeto faz parte do meu portfólio profissional. Você pode conferir este e outros projetos no meu domínio oficial:
+Desenvolvido por **Lidia L. Messias**  
+Email: lidia.mess@gmail.com  
+Este projeto faz parte do meu portfólio profissional. Você pode conferir este e outros projetos no meu domínio oficial:  
 **Link do Portfólio:** www.lidiamess.dev.br
 
 
