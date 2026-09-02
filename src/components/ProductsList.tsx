@@ -1,6 +1,5 @@
 import { useState, useEffect }from 'react'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
 import { Product } from '../types/product';
 import Card from './Card';
 import Filter from '../assets/images/system-uicons_filtering.png'
@@ -21,8 +20,12 @@ const ProductsList = () => {
 
         const getProducts = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/products');
-                const products = response.data;
+                const response = await fetch('http://localhost:3000/products');
+                if (!response.ok) {
+                    throw new Error(`Erro na requisição: ${response.status}`);
+                }
+                const data = await response.json();
+                const products = data;
 
                 setProducts(products);
                 setTotalProducts(products.length)

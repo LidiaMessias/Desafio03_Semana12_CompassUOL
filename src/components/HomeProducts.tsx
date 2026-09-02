@@ -1,6 +1,5 @@
 import { useState, useEffect} from 'react'
 import { Link } from 'react-router-dom'
-import axios from 'axios'
 import Card from './Card'
 import { Product } from '../types/product'
 
@@ -13,9 +12,14 @@ const HomeProducts = () => {
 
         const getProducts = async () => {
           try {
-              const response = await axios.get('http://localhost:3000/products');
-              console.log(response.data);
-              const allProducts = response.data;
+              const response = await fetch('http://localhost:3000/products');
+
+              if(!response.ok) {
+                  throw new Error(`Erro na requisição: ${response.status}`);
+              }
+              const data = await response.json();
+              console.log(data);
+              const allProducts = data;
 
               const aleat = allProducts.sort(() => 0.5 - Math.random());
               const selProducts = aleat.slice(0, 8);

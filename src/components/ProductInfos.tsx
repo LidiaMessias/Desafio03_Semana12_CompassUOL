@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom'
 import { Product } from '../types/product';
-import axios from 'axios';
 import Card from './Card';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../action/cartAction';
@@ -40,18 +39,32 @@ const ProductInfos = () => {
         
         const getProduct = async () => {
             try {
-                const response = await axios.get<Product>(`http://localhost:3000/products/${id}`);
+                const response = await fetch(`http://localhost:3000/products/${id}`);
                 //const products = response.data.products;         
                 //const singleProduct = products.find(product => product.id === parseInt(id ?? '', 10));
-                const singleProduct = response.data;
+                if(!response.ok) {
+                    if(response.status === 404) {
+                        setError("Product not found!");
+                    } else {
+                        setError("Error on loading product!");
+                    }
+                    return;
+                }
+
+                const singleProduct: Product = await response.json();
 
                 if (singleProduct) {
                     setProduct(singleProduct);
                     setSelectedImage(images[0]);
 
-                    const similarProductsResp = await axios.get<Product[]>('http://localhost:3000/products');
-                    console.log(similarProductsResp);
-                    const similarProducts = similarProductsResp.data.filter((prod) => {
+                    const similarProductsResp = await fetch('http://localhost:3000/products');
+
+                    if (!similarProductsResp.ok) {
+                        throw new Error(`Erro na requisição: ${similarProductsResp.status}`);
+                    }
+
+                    const allProducts: Product[] = await similarProductsResp.json();
+                    const similarProducts = allProducts.filter((prod) => {
                         return prod.id !== singleProduct.id && prod.tags.some((tag) => singleProduct.tags.includes(tag))
                     });
                     const qtProducts = similarProducts.slice(0,4);

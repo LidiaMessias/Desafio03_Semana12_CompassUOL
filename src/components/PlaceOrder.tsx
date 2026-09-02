@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 import { updateFormData } from '../action/updateFormDataAction'
 import { useDispatch ,useSelector } from "react-redux"
 import { RootState } from "../reducers/rootReducer";
@@ -37,18 +36,29 @@ const PlaceOrder = () => {
     const zipCode = watch('zipCode');
 
     useEffect(() => {
-        if (zipCode?.length === 8) {
-            axios.get(`https://viacep.com.br/ws/${zipCode}/json/`)
-            .then(response => {
-                const { logradouro, localidade, uf } = response.data;
-                setValue('address.street', logradouro);
-                setValue('address.town', localidade);
-                setValue('address.province', uf);
-            })
-            .catch(error => {
-                console.error('Invalid ZIP code', error);
-            })
-        }
+        const fetchAddressData = async () => {
+            if (zipCode?.length === 8) {
+                try {
+                    const response = await fetch(`https://viacep.com.br/ws/${zipCode}/json/`);
+                    if (!response.ok) {
+                        throw new Error(`Erro na requisição: ${response.status}`);
+                    }
+                    const data = await response.json();
+
+                    if(data.erro) {
+                        throw new Error('Invalid ZIP code');
+                    }
+
+                    const { logradouro, localidade, uf } = data;
+                    setValue('address.street', logradouro);
+                    setValue('address.town', localidade);
+                    setValue('address.province', uf);
+                } catch (error) {               
+                    console.error('Error fetching ZIP code data', error);
+                }
+            }
+        };
+        fetchAddressData();
     }, [zipCode, setValue]);
 
     const total = cartItems.reduce((acum, item) => acum + item.finalPrice * item.quantity, 0);
